@@ -1,3 +1,6 @@
+#
+# Hackserver to provide Singular over SCSCP
+#
 import socket
 import socketserver
 import logging
