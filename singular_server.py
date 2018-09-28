@@ -204,7 +204,7 @@ class SCSCPRequestHandler(socketserver.BaseRequestHandler):
         self.log = self.server.log.getChild(self.client_address[0])
         self.scscp = SCSCPServer(self.request, self.server.name,
                                      self.server.version, logger=self.log)
-        
+
     def handle(self):
         self.scscp.accept()
         while True:
@@ -231,7 +231,7 @@ class SCSCPRequestHandler(socketserver.BaseRequestHandler):
         try:
             head = call.data.elem.name
             self.log.debug('Requested head: %s...' % head)
-            
+
             if call.data.elem.cd == 'scscp2' and head in CD_SCSCP2:
                 res = getattr(self, head)(call.data)
             elif call.data.elem.cd == 'singular' and head in CD_SINGULAR:
@@ -264,7 +264,7 @@ class SCSCPRequestHandler(socketserver.BaseRequestHandler):
         return scscp.symbol_set([om.OMSymbol(head, cd='scscp2') for head in CD_SCSCP2]
                                     + [om.OMSymbol(head, cd='singular') for head in CD_SINGULAR],
                                     cdnames=['scscp1'])
-    
+
     def is_allowed_head(self, data):
         head = data.arguments[0]
         return conv.to_openmath((head.cd == 'scscp_trans_1' and head.name in CD_SCSCP_TRANS)
@@ -290,7 +290,7 @@ class SCSCPRequestHandler(socketserver.BaseRequestHandler):
 
 class Server(socketserver.ThreadingMixIn, socketserver.TCPServer, object):
     allow_reuse_address = True
-    
+
     def __init__(self, host='localhost', port=26135,
                      logger=None, name=b'SingularServer', version=b'0.0.1',
                      description='Singular SCSCP Server'):
@@ -299,7 +299,7 @@ class Server(socketserver.ThreadingMixIn, socketserver.TCPServer, object):
         self.name = name
         self.version = version
         self.description = description
-        
+
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
     logger = logging.getLogger('singular_server')
@@ -312,4 +312,3 @@ if __name__ == '__main__':
     except KeyboardInterrupt:
         srv.shutdown()
         srv.server_close()
-
