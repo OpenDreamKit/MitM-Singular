@@ -4,6 +4,20 @@ This package provides functionality to run Singular in a Math-in-the-Middle Virt
 Research Environment for Discrete Mathematics (otherwise known as OpenDreamKit
 https://www.opendreamkit.org)
 
+## Installation
+
+Several things need to be installed in order to run `singular_server.py`.  In
+Ubuntu, the following commands should do the trick:
+
+    sudo apt install python3-pip libsingular4-dev pkg-config
+    pip3 install --user openmath scscp pysingular termcolor
+
+Then run the server with:
+
+    git clone https://github.com/markuspf/MitM_Singular.git
+    cd MitM_Singular
+    python3 singular_server.py
+
 ## Documentation
 
 Full information and documentation can be found in the manual, available
