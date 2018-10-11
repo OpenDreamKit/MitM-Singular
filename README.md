@@ -1,8 +1,5 @@
 # MitM_Singular for Singular
 
-[![Build Status](https://travis-ci.org/markuspf/MitM_Singular.svg?branch=master)](https://travis-ci.org/markuspf/MitM_Singular)
-[![Code Coverage](https://codecov.io/github/markuspf/MitM_Singular/coverage.svg?branch=master&token=)](https://codecov.io/gh/markuspf/MitM_Singular)
-
 This package provides functionality to run Singular in a Math-in-the-Middle Virtual
 Research Environment for Discrete Mathematics (otherwise known as OpenDreamKit
 https://www.opendreamkit.org)
