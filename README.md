@@ -18,13 +18,8 @@ Then run the server with:
     cd MitM_Singular
     python3 singular_server.py
 
-## Documentation
 
-Full information and documentation can be found in the manual, available
-as PDF `doc/manual.pdf` or as HTML `htm/chapters.htm`, or on the package
-homepage at
 
-  <http://markuspf.github.io/MitM_Singular/>
 
 ## Bug reports and feature requests
 
