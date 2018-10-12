@@ -27,6 +27,10 @@ poly_ring_sym = om.OMSymbol("poly_ring_d_named", "polyd")
 dmp_sym = om.OMSymbol("DMP", "polyd")
 list_sym = om.OMSymbol("list", "list1")
 
+def RunSingularCommand(cmd):
+    print(colored("Running command: " + cmd, "green"))
+    return sing.RunSingularCommand(cmd)
+
 def makename():
     name = ""
     no = makename.var_counter
@@ -39,14 +43,14 @@ def makename():
 makename.var_counter = 1
 
 def retrieve_poly(name):
-    output = sing.RunSingularCommand(name + ";")[1]
+    output = RunSingularCommand(name + ";")[1]
     return parse.parse_polynomial(output)
 
 def retrieve_int(name):
-    return om.OMInteger(int(sing.RunSingularCommand(name + ";")[1][:-1]))
+    return om.OMInteger(int(RunSingularCommand(name + ";")[1][:-1]))
 
 def retrieve_ideal(name):
-    output = sing.RunSingularCommand(name + ";")[1]
+    output = RunSingularCommand(name + ";")[1]
     poly_lines = output.splitlines()
     polys = []
     for poly_line in poly_lines:
@@ -56,7 +60,7 @@ def retrieve_ideal(name):
 
 def retrieve(name):
     # cut off the final symbol which is newline
-    var_type = sing.RunSingularCommand("typeof(" + name + ");")[1][:-1]
+    var_type = RunSingularCommand("typeof(" + name + ");")[1][:-1]
     print(colored(var_type, "red"))
     if var_type == "poly":
         return retrieve_poly(name)
@@ -83,7 +87,7 @@ def ring_ctor(ring_name, variables):
     command = command[:-1]
     command += "), lp;"
     # initialise the ring
-    sing.RunSingularCommand(command)
+    RunSingularCommand(command)
 
 def poly_ctor(poly_name, terms, ring):
     command = "poly " + poly_name + " = "
@@ -102,7 +106,7 @@ def poly_ctor(poly_name, terms, ring):
     # to remove the last plus
     command = command[:-1]
     command += ";"
-    sing.RunSingularCommand(command)
+    RunSingularCommand(command)
 
 def poly_ctor_1(poly_name, terms, varnames):
     command = "poly " + poly_name + " = "
@@ -114,7 +118,7 @@ def poly_ctor_1(poly_name, terms, varnames):
         command += "+"
     command = command[:-1]
     command += ";"
-    sing.RunSingularCommand(command)
+    RunSingularCommand(command)
 
 def poly_eq(name, data):
     if (len(data) != 2):
@@ -137,7 +141,7 @@ def poly_eq(name, data):
     poly_ctor("p1", poly1.terms, poly1.ring)
     poly_ctor("p2", poly2.terms, poly2.ring)
 
-    result = sing.RunSingularCommand("int " + name + " = p1 == p2;")[1]
+    result = RunSingularCommand("int " + name + " = p1 == p2;")[1]
 
 def polynomial(name, data):
     poly = poly_info(data[0])
@@ -150,7 +154,7 @@ def ideal(name, data):
     ring_ctor("r", poly.variables)
     poly_ctor("p", poly.terms, poly.ring)
 
-    sing.RunSingularCommand("ideal " + name + " = ideal(p)")
+    RunSingularCommand("ideal " + name + " = ideal(p)")
 
 def groebner(name, data):
     polys = []
@@ -180,7 +184,7 @@ def dimension(data):
     ring_ctor("r", poly.variables)
     poly_ctor("p", poly.terms, poly.ring)
 
-    sing.RunSingularCommand("int " + name + " = dim(p)")
+    RunSingularCommand("int " + name + " = dim(p)")
 
 # Supported functions
 CD_SCSCP2 = ['get_service_description', 'get_allowed_heads', 'is_allowed_head', 'get_signature']
