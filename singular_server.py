@@ -170,8 +170,10 @@ def groebner(name, data):
         arg_str += s
         arg_str += ","
     arg_str = arg_str[:-1]
+    ideal_name = makename()
 
-    sing.RunSingularCommand("ideal " + name + " = groebner(" + arg_str + ");")
+    sing.RunSingularCommand("ideal " + ideal_name + " = " + arg_str + ";")
+    sing.RunSingularCommand("ideal " + name + " = groebner(" + ideal_name + ");")
 
 def dimension(data):
     poly = poly_info(data)
