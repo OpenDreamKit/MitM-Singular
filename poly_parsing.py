@@ -24,7 +24,7 @@ def tokenise(poly_str):
     while len(poly_str) > 0:
         current_token = ""
         if str(poly_str[0]).isalpha():
-            while len(poly_str) > 0 and str(poly_str[0]).isalpha():
+            while len(poly_str) > 0 and str(poly_str[0]).isalnum():
                 current_token = current_token + poly_str[0]
                 poly_str = poly_str[1:]
             tokens.append(current_token)
@@ -134,12 +134,13 @@ def poly_to_str(poly):
             poly_str = poly_str + "-"
         else:
             poly_str = poly_str + str(term.arguments[0].integer)
+            poly_str += "*"
             
         for i in range(1, len(poly.arguments[0].arguments)):
             if term.arguments[i].integer != 0:
                 poly_str = poly_str + poly.arguments[0].arguments[i].name
                 if term.arguments[i].integer != 1:
-                    poly_str = poly_str + str(term.arguments[i].integer)
+                    poly_str = poly_str + "^" + str(term.arguments[i].integer)
             if i == len(poly.arguments[0].arguments) - 1:
                 poly_str = poly_str + "+"
     poly_str = poly_str[:-1]

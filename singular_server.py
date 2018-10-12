@@ -89,10 +89,15 @@ def poly_ctor(poly_name, terms, ring):
     command = "poly " + poly_name + " = "
     print(colored(str(ring), "blue"))
     for term in terms:
+        if term.arguments[0].integer != 1:
+            command += str(term.arguments[0].integer)
         for i in range(1, len(ring.arguments)):
-            command += str(term.arguments[i-1].integer)
-            command += ring.arguments[i].name
-        command += str(term.arguments[-1].integer)
+            if term.arguments[i].integer != 0:
+                command += "*"
+                command += ring.arguments[i].name
+                if term.arguments[i].integer != 1:
+                    command += "^"
+                    command += str(term.arguments[i].integer)
         command += "+"
     # to remove the last plus
     command = command[:-1]
