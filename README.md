@@ -1,4 +1,4 @@
-# MitM_Singular for Singular
+# MitM-Singular for Singular
 
 This package provides functionality to run Singular in a Math-in-the-Middle Virtual
 Research Environment for Discrete Mathematics (otherwise known as OpenDreamKit
@@ -14,13 +14,13 @@ Ubuntu, the following commands should do the trick:
 
 Then run the server with:
 
-    git clone https://github.com/markuspf/MitM_Singular.git
-    cd MitM_Singular
+    git clone https://github.com/OpenDreamKit/MitM-Singular.git
+    cd MitM-Singular
     python3 singular_server.py
 
 ## Example
 
-To run the server, enter the MitM_Singular directory and call
+To run the server, enter the MitM-Singular directory and call
 `python3 singular_server.py`
 
 To interact with the server from Python, and compute the Groebner base of a set
@@ -43,12 +43,12 @@ Then to see the output in OpenMath XML, enter:
 
 Please submit bug reports and feature requests via our GitHub issue tracker:
 
-  <https://github.com/markuspf/MitM_Singular/issues>
+  <https://github.com/OpenDreamKit/MitM-Singular/issues>
 
 
 # License
 
-MitM_Singular is free software; you can redistribute it and/or modify it under
+MitM-Singular is free software; you can redistribute it and/or modify it under
 the terms of the BSD 3-clause license.
 
 For details see the files COPYRIGHT.md and LICENSE.
