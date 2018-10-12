@@ -18,8 +18,26 @@ Then run the server with:
     cd MitM_Singular
     python3 singular_server.py
 
+## Example
 
+To run the server, enter the MitM_Singular directory and call
+`python3 singular_server.py`
 
+To interact with the server from Python, and compute the Groebner base of a set
+of polynomials, open an interactive Python window by calling `python3` on the
+command line, and then enter:
+
+   import openmath.openmath as om, scscp, poly_parsing as parse, lxml.etree as etree
+   client = scscp.SCSCPCLI("localhost", 26135)
+   list_of_strings = ["3*x1+2*x2", "3*x2+2*x3", "3*x1+2*x4", "3*x3+2*x4", "2*x3+3*x4", "2*x1+3*x2", "2*x1+3*x4", "2*x2+3*x3"]
+   list_of_polys = [parse.parse_polynomial(str) for str in list_of_strings]
+   l = om.OMApplication(om.OMSymbol("list", "list1"), list_of_polys)
+   g = client.heads.singular.groebner([l])
+
+Then to see the output in OpenMath XML, enter:
+
+   import lxml.etree as etree, openmath.encoder as enc
+   etree.tostring(enc.encode_xml(g))
 
 ## Bug reports and feature requests
 
