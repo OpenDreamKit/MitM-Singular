@@ -1,6 +1,8 @@
 #
 # Hackserver to provide Singular over SCSCP
 #
+import os
+
 import socket
 import socketserver
 import logging
@@ -314,7 +316,7 @@ class Server(socketserver.ThreadingMixIn, socketserver.TCPServer, object):
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
     logger = logging.getLogger('singular_server')
-    srv = Server(logger=logger)
+    srv = Server(host=os.environ.get('SCSCP_HOST') or 'localhost', logger=logger)
 
     #sing.InitializeSingular("/usr/bin/Singular")
     sing.InitializeSingular("/usr/bin/Singular")

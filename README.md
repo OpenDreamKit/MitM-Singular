@@ -6,11 +6,16 @@ https://www.opendreamkit.org)
 
 ## Installation
 
-Several things need to be installed in order to run `singular_server.py`.  In
-Ubuntu, the following commands should do the trick:
+Several things need to be installed in order to run `singular_server.py`. 
+In Ubuntu, the following commands should do the trick:
 
-    sudo apt install python3-pip libsingular4-dev pkg-config
+    sudo apt install python3-pip libgmp3-dev libsingular4-dev pkg-config
     pip3 install --user openmath scscp pysingular termcolor
+
+Note that singular itself is also needed. If not installed already, this can
+be installed with:
+
+    sudo apt install singular
 
 Then run the server with:
 
