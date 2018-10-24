@@ -4,17 +4,8 @@
 # In[ ]:
 
 from openmath import openmath as om
+from names import *
 import collections
-
-
-# In[ ]:
-
-int_ring = om.OMSymbol("integers", "ring3")
-sdmp_sym = om.OMSymbol("SDMP", "polyd1")
-term_sym = om.OMSymbol("term", "polyd1")
-poly_ring_sym = om.OMSymbol("poly_ring_d_named", "polyd1")
-dmp_sym = om.OMSymbol("DMP", "polyd1")
-
 
 # In[ ]:
 
@@ -105,7 +96,7 @@ def parse_polynomial(poly_str):
             term = parse_term(tokens)
     
         var_list = list(var_list)
-        poly_ring = om.OMApplication(poly_ring_sym, [int_ring] + [om.OMVariable(var_name) for var_name in list(var_list)])
+        poly_ring = om.OMApplication(poly_ring_sym, [int_ring_sym] + [om.OMVariable(var_name) for var_name in list(var_list)])
         om_terms = []
         for term in terms:
             args = []
