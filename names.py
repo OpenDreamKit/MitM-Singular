@@ -17,16 +17,9 @@ ring3 = CDBASE.ring3
 Groeber = SINGULAR.groebner         # Groebner base of an ideal, takes and returns ideal
 Ideal = SINGULAR.ideal              # takes polynomials, returns ideal
 
-poly_ring = polyd1.poly_ring_d_named # takes a ring and variable names, returns polynomial ring
-dmp = polyd1.DMP                     # takes a polynomial ring and a polynomial (SDMP) 
-sdmp = polyd1.SDMP                   # takes monomials, returns polynomial, no info about ring
-term = polyd1.term                   # takes coefficient and exponents, returns monomial, no info about variable names
+poly_ring_sym = polyd1.poly_ring_d_named # takes a ring and variable names, returns polynomial ring
+dmp_sym = polyd1.DMP                     # takes a polynomial ring and a polynomial (SDMP) 
+sdmp_sym = polyd1.SDMP                   # takes monomials, returns polynomial, no info about ring
+term_sym = polyd1.term                   # takes coefficient and exponents, returns monomial, no info about variable names
 
-int_ring = ring3.integers            # the ring of integers
-
-# the corresponding om.OMSymbol objects, used by poly_parsing 
-poly_ring_sym = poly_ring.toOM()
-dmp_sym = dmp.toOM() 
-sdmp_sym = sdmp.toOM()
-term_sym = term.toOM()
-int_ring_sym = int_ring.toOM()
+int_ring_sym = ring3.integers            # the ring of integers
