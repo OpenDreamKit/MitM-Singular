@@ -24,7 +24,7 @@ term = polyd1.term                   # takes coefficient and exponents, returns 
 
 int_ring = ring3.integers            # the ring of integers
 
-# the corresponding om.OMSymbol objects
+# the corresponding om.OMSymbol objects, used by poly_parsing 
 poly_ring_sym = poly_ring.toOM()
 dmp_sym = dmp.toOM() 
 sdmp_sym = sdmp.toOM()

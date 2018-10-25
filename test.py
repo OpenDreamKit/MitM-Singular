@@ -11,7 +11,7 @@ def evaluate(obj):
 # i.e., poly_ring, dmp, sdmp, term, Ideal, Groebner
 
 # a polynomial ring
-R = poly_ring(int_ring_sym, "x1", "x2", "x3", "x4")
+R = poly_ring(int_ring_sym, "x1", "x2", "x3", "x4") # TODO singular_server and poly_parse expect these as (unbound) OMVs
 
 # some polynomials
 p1 = dmp(R, sdmp(term(3,1,0,0,0), term(2,0,1,0,0))) # 3*x1+2*x2
