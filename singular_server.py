@@ -75,10 +75,13 @@ class poly_info:
         self.terms = self.sdmp.arguments
         self.variables = self.ring.arguments[1:]
 
+def getVarName(v):
+    v.string
+
 def ring_ctor(ring_name, variables):
     command = "ring " + ring_name + " = 0, ("
     for v in variables:
-        command += v.string
+        command += getVarName(v)
         command += ","
     command = command[:-1]
     command += "), lp;"
@@ -94,7 +97,7 @@ def poly_ctor(poly_name, terms, ring):
         for i in range(1, len(ring.arguments)):
             if term.arguments[i].integer != 0:
                 command += "*"
-                command += ring.arguments[i].name
+                command += getVarName(ring.arguments[i])
                 if term.arguments[i].integer != 1:
                     command += "^"
                     command += str(term.arguments[i].integer)
