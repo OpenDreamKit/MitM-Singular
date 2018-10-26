@@ -51,7 +51,7 @@ def retrieve_ideal(name):
     for poly_line in poly_lines:
         print(colored(poly_line.split("=")[1], "yellow"))
         polys.append(parse.parse_polynomial(poly_line.split("=")[1]))
-    return Ideal(polys)
+    return Ideal(*polys)
 
 def retrieve(name):
     """takes a Singular-returned string and turns it into OpenMath using the retrieve_XXX methods above"""
