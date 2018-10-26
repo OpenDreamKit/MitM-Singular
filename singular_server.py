@@ -206,7 +206,7 @@ def evaluate(obj):
     if isinstance(obj, om.OMApplication):
         fun = obj.elem
         # check for OMA(OMS(singular, head), args), cdbase is ignored
-        if isinstance(fun, om.OMSymbol) and fun.cd == SINGULAR.cd:
+        if isinstance(fun, om.OMSymbol) and fun.cd == SINGULAR._cd:
             head = fun.name 
             handler = get_handler(head)
             if handler != None:
