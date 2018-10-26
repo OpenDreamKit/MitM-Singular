@@ -76,7 +76,7 @@ class poly_info:
         self.variables = self.ring.arguments[1:]
 
 def getVarName(v):
-    v.string
+    return v.string
 
 def ring_ctor(ring_name, variables):
     command = "ring " + ring_name + " = 0, ("
