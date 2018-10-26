@@ -96,7 +96,7 @@ def parse_polynomial(poly_str):
             term = parse_term(tokens)
     
         var_list = list(var_list)
-        poly_ring = om.OMApplication(poly_ring_sym, [int_ring_sym] + [om.OMVariable(var_name) for var_name in list(var_list)])
+        poly_ring = om.OMApplication(poly_ring_sym, [int_ring_sym] + [om.OMString(var_name) for var_name in list(var_list)])
         om_terms = []
         for term in terms:
             args = []

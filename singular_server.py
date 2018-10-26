@@ -78,7 +78,7 @@ class poly_info:
 def ring_ctor(ring_name, variables):
     command = "ring " + ring_name + " = 0, ("
     for v in variables:
-        command += v.name
+        command += v.string
         command += ","
     command = command[:-1]
     command += "), lp;"
