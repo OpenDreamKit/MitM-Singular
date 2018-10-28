@@ -16,18 +16,11 @@ from scscp import scscp
 import PySingular as sing
 
 import poly_parsing as parse
+from names import *
 
 import traceback
 from termcolor import colored
 
-false_sym = om.OMSymbol("false", "logic1")
-true_sym = om.OMSymbol("true", "logic1")
-int_ring_sym = om.OMSymbol("integers", "ring3")
-sdmp_sym = om.OMSymbol("SDMP", "polyd")
-term_sym = om.OMSymbol("term", "polyd")
-poly_ring_sym = om.OMSymbol("poly_ring_d_named", "polyd")
-dmp_sym = om.OMSymbol("DMP", "polyd")
-list_sym = om.OMSymbol("list", "list1")
 
 def RunSingularCommand(cmd):
     print(colored("Running command: " + cmd, "green"))
@@ -58,9 +51,10 @@ def retrieve_ideal(name):
     for poly_line in poly_lines:
         print(colored(poly_line.split("=")[1], "yellow"))
         polys.append(parse.parse_polynomial(poly_line.split("=")[1]))
-    return om.OMApplication(list_sym, polys)
+    return Ideal(*polys)
 
 def retrieve(name):
+    """takes a Singular-returned string and turns it into OpenMath using the retrieve_XXX methods above"""
     # cut off the final symbol which is newline
     var_type = RunSingularCommand("typeof(" + name + ");")[1][:-1]
     print(colored(var_type, "red"))
@@ -81,10 +75,13 @@ class poly_info:
         self.terms = self.sdmp.arguments
         self.variables = self.ring.arguments[1:]
 
+def getVarName(v):
+    return v.string
+
 def ring_ctor(ring_name, variables):
     command = "ring " + ring_name + " = 0, ("
     for v in variables:
-        command += v.name
+        command += getVarName(v)
         command += ","
     command = command[:-1]
     command += "), lp;"
@@ -100,7 +97,7 @@ def poly_ctor(poly_name, terms, ring):
         for i in range(1, len(ring.arguments)):
             if term.arguments[i].integer != 0:
                 command += "*"
-                command += ring.arguments[i].name
+                command += getVarName(ring.arguments[i])
                 if term.arguments[i].integer != 1:
                     command += "^"
                     command += str(term.arguments[i].integer)
@@ -129,7 +126,7 @@ def poly_eq(name, data):
     poly2 = poly_info(data[1])
 
     # only support integer ring for coefficients for now
-    if poly1.ring.arguments[0] != int_ring_sym:
+    if poly1.ring.arguments[0] != parse.int_ring_sym:
         raise TypeError
 
     variables = []
@@ -143,7 +140,7 @@ def poly_eq(name, data):
     poly_ctor("p1", poly1.terms, poly1.ring)
     poly_ctor("p2", poly2.terms, poly2.ring)
 
-    result = RunSingularCommand("int " + name + " = p1 == p2;")[1]
+    RunSingularCommand("int " + name + " = p1 == p2;")[1]
 
 def polynomial(name, data):
     poly = poly_info(data[0])
@@ -190,12 +187,8 @@ def dimension(data):
 
 # Supported functions
 CD_SCSCP2 = ['get_service_description', 'get_allowed_heads', 'is_allowed_head', 'get_signature']
-CD_SINGULAR = [
-        'polynomial_eq',
-        'polynomial',
-        'ideal',
-        'groebner'
-]
+CD_SINGULAR = ['polynomial_eq', 'polynomial', 'ideal', 'groebner']
+
 
 def get_handler(head):
     if head == "polynomial_eq":
@@ -211,6 +204,23 @@ def get_handler(head):
     else:
         return None
 
+def evaluate(obj):
+    """evaluates an expression via Singular"""
+    if isinstance(obj, om.OMApplication):
+        fun = obj.elem
+        # check for OMA(OMS(singular, head), args), cdbase is ignored
+        if isinstance(fun, om.OMSymbol) and fun.cd == SINGULAR._cd:
+            head = fun.name 
+            handler = get_handler(head)
+            if handler != None:
+                args = obj.arguments
+                name = makename()
+                handler(name, args)
+                return retrieve(name)
+    return obj
+
+
+# the boilerplate for SCSCP server that wraps around the evaluate function
 class SCSCPRequestHandler(socketserver.BaseRequestHandler):
     def setup(self):
         self.server.log.info("New connection from %s:%d" % self.client_address)
@@ -243,17 +253,14 @@ class SCSCPRequestHandler(socketserver.BaseRequestHandler):
             raise SCSCPProtocolError('Bad message from client: %s.' % call.type, om=call.om())
         try:
             head = call.data.elem.name
+            args = call.data.arguments
             self.log.debug('Requested head: %s...' % head)
 
             if call.data.elem.cd == 'scscp2' and head in CD_SCSCP2:
                 res = getattr(self, head)(call.data)
-            elif call.data.elem.cd == 'singular' and head in CD_SINGULAR:
+            elif call.data.elem.cd == EVAL_SYM.cd and head == EVAL_SYM.name and len(args) == 1:
                 #args = [conv.to_python(a) for a in call.data.arguments]
-                args = call.data.arguments
-                handler = get_handler(head)
-                name = makename()
-                handler(name, args)
-                res = retrieve(name)
+                res = evaluate(args[0])
             else:
                 self.log.debug('...head unknown.')
                 return self.scscp.terminated(call.id, om.OMError(
@@ -274,15 +281,13 @@ class SCSCPRequestHandler(socketserver.BaseRequestHandler):
                                              'Unhandled exception %s.' % str(e))
 
     def get_allowed_heads(self, data):
-        return scscp.symbol_set([om.OMSymbol(head, cd='scscp2') for head in CD_SCSCP2]
-                                    + [om.OMSymbol(head, cd='singular') for head in CD_SINGULAR],
-                                    cdnames=['scscp1'])
+        return scscp.symbol_set([om.OMSymbol(head, cd='scscp2') for head in CD_SCSCP2] + [EVAL_SYM], cdnames=['scscp1'])
 
     def is_allowed_head(self, data):
         head = data.arguments[0]
         return conv.to_openmath((head.cd == 'scscp_trans_1' and head.name in CD_SCSCP_TRANS)
                                     or (head.cd == 'scscp2' and head.name in CD_SCSCP2)
-                                    or (head.cd == 'singular'and head.name in CD_SINGULAR)
+                                    or (head.cd == EVAL_SYM.cd and head.name == EVAL_SYM.name)
                                     or head.cd == 'scscp1')
 
     def get_service_description(self, data):
