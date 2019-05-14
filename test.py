@@ -4,7 +4,7 @@ from names import *
 def evaluate(obj):
     """evaluate an object via Singular and SCSCP"""
     client = scscp.SCSCPCLI("localhost", 26135)
-    return client.heads.scscp_transient_1.MitM_Evaluate.([obj])
+    return client.heads.scscp_transient_1.MitM_Evaluate([obj])
     print(obj)
 
 # see 'names.py' for the meaning of the symbols

@@ -20,6 +20,8 @@ ADD COPYRIGHT.md /app/COPYRIGHT.md
 ADD LICENSE /app/LICENSE
 ADD README.md /app/README.md
 
+ADD names.py /app/names.py
+ADD test.py /app/test.py
 ADD poly_parsing.py /app/poly_parsing.py
 ADD singular_server.py /app/singular_server.py
 
