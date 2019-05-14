@@ -1,18 +1,20 @@
 FROM debian:stretch
 
+# Put dependencies into /app/
+WORKDIR /app/
+ADD requirements.txt /app/requirements.txt
+
 # Install dependencies
 RUN apt-get update \
     && apt-get install -y \
+        git \
         python3-pip \
         libgmp3-dev \
         libsingular4-dev \
         pkg-config \
         singular \
-    && pip3 install openmath scscp pysingular termcolor
+    && python3 -m pip install -r requirements.txt
 
-# Put this repository into /app/
-RUN mkdir /app/
-WORKDIR /app/
 
 ADD COPYRIGHT.md /app/COPYRIGHT.md
 ADD LICENSE /app/LICENSE

@@ -1,0 +1,4 @@
+-e git+https://github.com/OpenMath/py-openmath#egg=openmath
+PySingular==0.9.7
+scscp==0.1.1
+termcolor==1.1.0
